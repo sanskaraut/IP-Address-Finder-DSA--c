@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splay Tree Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Splay Tree <span>Visualizer</span></h1>
+            <p>Experience the self-adjusting nature of Splay Trees.</p>
+        </header>
+
+        <div class="controls">
+            <div class="input-group">
+                <input type="number" id="nodeValue" placeholder="Value..." autocomplete="off">
+                <button id="insertBtn" class="btn btn-primary">Insert</button>
+                <button id="searchBtn" class="btn btn-secondary">Search</button>
+                <button id="deleteBtn" class="btn btn-danger">Delete</button>
+            </div>
+            <div class="mode-controls">
+                <select id="treeSelect" class="select-input">
+                    <option value="splay">Splay Tree</option>
+                    <option value="bst">Binary Search Tree</option>
+                    <option value="avl">AVL Tree</option>
+                </select>
+                <div class="toggle-group">
+                    <input type="checkbox" id="compareMode">
+                    <label for="compareMode">Comparison Mode</label>
+                </div>
+                <button id="resetBtn" class="btn btn-outline">Reset</button>
+            </div>
+        </div>
+
+        <div id="visualizer-container" class="multi-tree">
+            <div class="tree-view" id="splay-view">
+                <div class="tree-header">Splay Tree <span class="metrics" id="splay-metrics"></span></div>
+                <svg id="splay-svg" class="tree-svg"></svg>
+            </div>
+            <div class="tree-view" id="bst-view" style="display: none;">
+                <div class="tree-header">Binary Search Tree <span class="metrics" id="bst-metrics"></span></div>
+                <svg id="bst-svg" class="tree-svg"></svg>
+            </div>
+            <div class="tree-view" id="avl-view" style="display: none;">
+                <div class="tree-header">AVL Tree <span class="metrics" id="avl-metrics"></span></div>
+                <svg id="avl-svg" class="tree-svg"></svg>
+            </div>
+            <div id="empty-state">
+                <p>Tree is empty. Start by inserting a value.</p>
+            </div>
+        </div>
+
+        <div id="graph-container">
+            <div class="graph-header">Operation Cost Analysis (Amortized View)</div>
+            <div class="graph-legend">
+                <span class="legend-item"><span class="color-box splay"></span> Splay</span>
+                <span class="legend-item"><span class="color-box bst"></span> BST</span>
+                <span class="legend-item"><span class="color-box avl"></span> AVL</span>
+            </div>
+            <canvas id="costGraph"></canvas>
+        </div>
+
+        <div id="status-bar">
+            <p id="status-text">Ready</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
