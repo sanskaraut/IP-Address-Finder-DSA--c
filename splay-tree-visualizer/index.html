@@ -15,8 +15,14 @@
             <h1>Splay Tree <span>Visualizer</span></h1>
             <p>Experience the self-adjusting nature of Splay Trees.</p>
         </header>
+        <div class="tabs">
+            <button class="tab-btn active" data-target="tab-management">Network Manager</button>
+            <button class="tab-btn" data-target="tab-simulation">Splay Simulation</button>
+            <button class="tab-btn" data-target="tab-analytics">Analytics Dashboard</button>
+        </div>
 
-        <div class="management-panel">
+        <div id="tab-management" class="tab-content active">
+            <div class="management-panel">
             <div class="panel-header">IP Management Control</div>
             <div class="panel-inputs">
                 <input type="text" id="ipInput" placeholder="IP Address (e.g. 192.168.1.1)" autocomplete="off">
@@ -74,34 +80,7 @@
             </div>
         </div>
 
-        <div id="graph-container">
-            <div class="graph-header">Operation Cost Analysis (Amortized View)</div>
-            
-            <div class="simulation-controls">
-                <div class="sim-label">Workload Simulations:</div>
-                <div class="sim-buttons">
-                    <button id="hotspotBtn" class="btn btn-outline btn-sm">Hotspot</button>
-                    <button id="randomBtn" class="btn btn-outline btn-sm">Random</button>
-                    <button id="seqBtn" class="btn btn-outline btn-sm">Sequential</button>
-                </div>
-            </div>
-
-            <div id="sim-results" style="display: none;">
-                <div class="result-header">Last Simulation: <span id="sim-type-text">None</span></div>
-                <div class="results-grid">
-                    <div class="result-card splay">Splay Avg: <span id="splay-avg">-</span></div>
-                    <div class="result-card bst">BST Avg: <span id="bst-avg">-</span></div>
-                    <div class="result-card avl">AVL Avg: <span id="avl-avg">-</span></div>
-                </div>
-            </div>
-
-            <div class="graph-legend">
-                <span class="legend-item"><span class="color-box splay"></span> Splay</span>
-                <span class="legend-item"><span class="color-box bst"></span> BST</span>
-                <span class="legend-item"><span class="color-box avl"></span> AVL</span>
-            </div>
-            <canvas id="costGraph"></canvas>
-        </div>
+        <!-- Graph container moved to Analytics tab -->
 
         <div id="table-container">
             <div class="table-header">Network IP Registry</div>
@@ -121,10 +100,198 @@
             </div>
         </div>
 
-        <div id="status-bar">
-            <p id="status-text">Ready</p>
+            <div id="status-bar">
+                <p id="status-text">Ready</p>
+            </div>
+        </div>
+
+        <div id="tab-simulation" class="tab-content" style="display: none;">
+            <div class="simulation-layout">
+                <div class="sim-sidebar">
+                    <div class="management-panel">
+                        <div class="panel-header">Simulation Controls</div>
+                        <div class="panel-inputs" style="flex-direction: column;">
+                            <input type="text" id="simIpInput" placeholder="IP Address (e.g. 192.168.1.1)" autocomplete="off">
+                            <div class="panel-actions" style="width: 100%;">
+                                <button id="simInsertBtn" class="btn btn-primary">Insert</button>
+                                <button id="simSearchBtn" class="btn btn-secondary">Search</button>
+                                <button id="simDeleteBtn" class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="management-panel">
+                        <div class="panel-header">Playback Engine</div>
+                        <div class="panel-actions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <button id="simPrevBtn" class="btn btn-outline" disabled>Previous</button>
+                            <button id="simNextBtn" class="btn btn-primary" disabled>Next Step</button>
+                            <button id="simAutoBtn" class="btn btn-secondary" style="grid-column: span 2;" disabled>Auto Play</button>
+                        </div>
+                        <div class="panel-actions" style="margin-top: 0.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <button id="simResetBtn" class="btn btn-outline" disabled>Reset Playback</button>
+                            <button id="simClearTreeBtn" class="btn btn-danger">Clear Tree</button>
+                        </div>
+                    </div>
+
+                    <div class="management-panel explanation-panel">
+                        <div class="panel-header">Operation Explanation</div>
+                        <div id="simStepCounter" class="step-counter">Step: - / -</div>
+                        <div id="simOperationText" class="operation-text">Ready for simulation.</div>
+                        <div id="simExplanationText" class="explanation-text text-muted"></div>
+                    </div>
+
+                    <div class="management-panel metrics-panel">
+                        <div class="panel-header">Splay Metrics</div>
+                        <div class="sim-metrics-grid">
+                            <div class="metric-card"><span class="label">Total Rotations</span><span class="value" id="simMetricRotations">0</span></div>
+                            <div class="metric-card"><span class="label">Depth Before</span><span class="value" id="simMetricDepthBefore">-</span></div>
+                            <div class="metric-card"><span class="label">Depth After</span><span class="value" id="simMetricDepthAfter">-</span></div>
+                            <div class="metric-card"><span class="label">Depth Improv.</span><span class="value" id="simMetricDepthImprov">-</span></div>
+                            <div class="metric-card"><span class="label">Zig</span><span class="value" id="simMetricZig">0</span></div>
+                            <div class="metric-card"><span class="label">Zig-Zig</span><span class="value" id="simMetricZigZig">0</span></div>
+                            <div class="metric-card"><span class="label">Zag-Zag</span><span class="value" id="simMetricZagZag">0</span></div>
+                            <div class="metric-card"><span class="label">Zig-Zag</span><span class="value" id="simMetricZigZag">0</span></div>
+                            <div class="metric-card"><span class="label">Zag-Zig</span><span class="value" id="simMetricZagZig">0</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sim-main">
+                    <div id="sim-visualizer-container">
+                        <div class="tree-header">Sandbox Splay Tree</div>
+                        <svg id="sim-splay-svg" class="tree-svg"></svg>
+                        <div id="sim-empty-state">
+                            <p>Simulation Tree is empty. Insert an IP to begin.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-analytics" class="tab-content" style="display: none;">
+            <div class="dashboard-header">
+                <h2>System Analytics</h2>
+                <div class="toggle-group" style="background: rgba(15,23,42,0.5); padding: 0.5rem 1rem; border-radius: 0.5rem;">
+                    <label class="switch-label">Beginner</label>
+                    <label class="switch">
+                        <input type="checkbox" id="academicModeToggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <label class="switch-label">Academic</label>
+                </div>
+            </div>
+
+            <div class="simulation-controls management-panel" style="margin-top: 0;">
+                <div class="sim-label">Run Workload Simulation:</div>
+                <div class="sim-buttons">
+                    <button id="hotspotBtn" class="btn btn-primary btn-sm">Hotspot Workload</button>
+                    <button id="randomBtn" class="btn btn-secondary btn-sm">Random Workload</button>
+                    <button id="seqBtn" class="btn btn-outline btn-sm">Sequential Workload</button>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Section 1: Comparative Visualization -->
+                <details class="dashboard-card" open>
+                    <summary>Performance Summary</summary>
+                    <div class="card-content">
+                        <div class="comp-bars-container">
+                            <div class="comp-metric">
+                                <div class="comp-label">Average Cost</div>
+                                <div class="comp-bar-group" id="bar-avg-cost"></div>
+                            </div>
+                            <div class="comp-metric">
+                                <div class="comp-label">Max Cost</div>
+                                <div class="comp-bar-group" id="bar-max-cost"></div>
+                            </div>
+                            <div class="comp-metric">
+                                <div class="comp-label">Avg Search Depth</div>
+                                <div class="comp-bar-group" id="bar-avg-depth"></div>
+                            </div>
+                            <div class="comp-metric">
+                                <div class="comp-label">Root Hit Rate</div>
+                                <div class="comp-bar-group" id="bar-root-hits"></div>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Section 2: Insights -->
+                <details class="dashboard-card" open>
+                    <summary>Why Splay Won? (Data-Driven Insights)</summary>
+                    <div class="card-content">
+                        <div id="insightsPanel" class="insights-panel">
+                            <p class="text-muted">Run a simulation or perform operations to generate insights.</p>
+                        </div>
+                        <div class="tree-health-grid">
+                            <div class="health-metric">
+                                <span class="label">Locality Score (Top-K)</span>
+                                <span class="value" id="healthLocality">-</span>
+                            </div>
+                            <div class="health-metric">
+                                <span class="label">Balance Score</span>
+                                <span class="value" id="healthBalance">-</span>
+                            </div>
+                            <div class="health-metric">
+                                <span class="label">Adaptive Efficiency</span>
+                                <span class="value" id="healthAdaptive">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Section 3: Cost Graph -->
+                <details class="dashboard-card" open style="grid-column: 1 / -1;">
+                    <summary>Cost Evolution Graph</summary>
+                    <div class="card-content">
+                        <div class="graph-toolbar">
+                            <div class="graph-toggles">
+                                <button class="btn btn-sm btn-outline active" data-mode="instant">Instant</button>
+                                <button class="btn btn-sm btn-outline" data-mode="moving">Moving Avg</button>
+                                <button class="btn btn-sm btn-outline" data-mode="cumulative">Cumulative</button>
+                            </div>
+                            <div class="graph-legend">
+                                <span class="legend-item"><span class="color-box splay"></span> Splay</span>
+                                <span class="legend-item"><span class="color-box bst"></span> BST</span>
+                                <span class="legend-item"><span class="color-box avl"></span> AVL</span>
+                            </div>
+                        </div>
+                        <div style="position: relative;">
+                            <canvas id="costGraph"></canvas>
+                            <div id="graphTooltip" class="graph-tooltip"></div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Section 4: Tree Snapshots -->
+                <details class="dashboard-card" open style="grid-column: 1 / -1;">
+                    <summary>Tree Evolution Timeline</summary>
+                    <div class="card-content">
+                        <div id="snapshotsContainer" class="snapshots-timeline">
+                            <div class="text-muted" style="padding: 2rem; text-align: center;">Run a simulation to capture snapshots.</div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Section 5: Top IPs -->
+                <details class="dashboard-card" open style="grid-column: 1 / -1;">
+                    <summary>Top Active IPs</summary>
+                    <div class="card-content">
+                        <div class="top-ips-toggles" style="margin-bottom: 1rem;">
+                            <button class="btn btn-sm btn-outline active" id="btnRealIPs">Real Traffic</button>
+                            <button class="btn btn-sm btn-outline" id="btnSimIPs">Simulation Traffic</button>
+                        </div>
+                        <div id="topIpsContainer" class="top-ips-container">
+                            <p class="text-muted">No data available.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
         </div>
     </div>
+
+    <div id="toast-container"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
