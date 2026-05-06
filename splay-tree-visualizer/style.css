@@ -11,6 +11,9 @@
     --node-fill: #334155;
     --node-stroke: #6366f1;
     --line-color: #475569;
+    --blacklisted: #ef4444;
+    --whitelisted: #10b981;
+    --btn-dark: #334155;
 }
 
 * {
@@ -151,8 +154,62 @@ input[type="number"]:focus {
     font-weight: 600;
 }
 
-.toggle-group input {
-    cursor: pointer;
+.btn-dark { background: var(--btn-dark); color: white; }
+.btn-dark:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.btn-success { background: var(--whitelisted); color: white; }
+.btn-success:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.management-panel {
+    background: rgba(15, 23, 42, 0.5);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.panel-header {
+    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.panel-inputs {
+    display: flex;
+    gap: 1rem;
+}
+
+.panel-inputs input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.panel-inputs input:focus {
+    border-color: var(--primary);
+}
+
+.panel-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.panel-actions .btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 0.6rem;
+    font-size: 0.85rem;
 }
 
 #visualizer-container {
@@ -192,16 +249,57 @@ input[type="number"]:focus {
     z-index: 10;
 }
 
-.metrics {
-    font-size: 0.75rem;
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--border);
+}
+
+.metric-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(30, 41, 59, 0.5);
+    padding: 0.4rem;
+    border-radius: 0.4rem;
+    border: 1px solid var(--border);
+}
+
+.metric-card .label {
+    font-size: 0.65rem;
     color: var(--text-muted);
-    font-weight: 400;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.metric-card .value {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
 }
 
 .tree-svg {
     flex: 1;
     width: 100%;
     height: 100%;
+}
+
+/* Tooltip */
+.node-tooltip {
+    position: absolute;
+    background: rgba(15, 23, 42, 0.95);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    pointer-events: none;
+    z-index: 1000;
+    border: 1px solid var(--primary);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    display: none;
 }
 
 #empty-state {
@@ -259,6 +357,129 @@ input[type="number"]:focus {
     border-radius: 0.5rem;
 }
 
+.simulation-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--border);
+    margin-top: 0.5rem;
+}
+
+.sim-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.sim-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+}
+
+#sim-results {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--primary);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.result-header {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+#sim-type-text {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.result-card {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.result-card.splay { background: rgba(99, 102, 241, 0.1); color: #6366f1; border-color: rgba(99, 102, 241, 0.3); }
+.result-card.bst { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3); }
+.result-card.avl { background: rgba(16, 185, 129, 0.1); color: #10b981; border-color: rgba(16, 185, 129, 0.3); }
+
+#table-container {
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.table-header {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--primary);
+}
+
+.table-wrapper {
+    max-height: 250px;
+    overflow-y: auto;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+}
+
+#ipTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+#ipTable th, #ipTable td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+#ipTable th {
+    background: var(--bg);
+    color: var(--text-muted);
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+}
+
+#ipTable tr:hover {
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.status-badge {
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-normal { background: var(--border); color: var(--text-muted); }
+.status-blacklisted { background: rgba(239, 68, 68, 0.2); color: var(--blacklisted); border: 1px solid var(--blacklisted); }
+.status-whitelisted { background: rgba(16, 185, 129, 0.2); color: var(--whitelisted); border: 1px solid var(--whitelisted); }
+
 #status-bar {
     padding: 0.75rem 1.5rem;
     background: rgba(15, 23, 42, 0.5);
@@ -281,6 +502,16 @@ input[type="number"]:focus {
 .node-circle.root-node {
     stroke: var(--secondary);
     stroke-width: 4;
+}
+
+.node-circle.blacklisted {
+    fill: rgba(239, 68, 68, 0.8);
+    stroke: var(--blacklisted);
+}
+
+.node-circle.whitelisted {
+    fill: rgba(16, 185, 129, 0.8);
+    stroke: var(--whitelisted);
 }
 
 .node-circle.active-node {

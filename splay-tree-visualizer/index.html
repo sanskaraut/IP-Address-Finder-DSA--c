@@ -16,13 +16,23 @@
             <p>Experience the self-adjusting nature of Splay Trees.</p>
         </header>
 
-        <div class="controls">
-            <div class="input-group">
-                <input type="number" id="nodeValue" placeholder="Value..." autocomplete="off">
-                <button id="insertBtn" class="btn btn-primary">Insert</button>
-                <button id="searchBtn" class="btn btn-secondary">Search</button>
-                <button id="deleteBtn" class="btn btn-danger">Delete</button>
+        <div class="management-panel">
+            <div class="panel-header">IP Management Control</div>
+            <div class="panel-inputs">
+                <input type="text" id="ipInput" placeholder="IP Address (e.g. 192.168.1.1)" autocomplete="off">
+                <input type="number" id="packetInput" placeholder="Data Packet..." autocomplete="off">
             </div>
+            <div class="panel-actions">
+                <button id="addIPBtn" class="btn btn-primary">Add IP</button>
+                <button id="searchIPBtn" class="btn btn-secondary">Search IP</button>
+                <button id="deleteIPBtn" class="btn btn-danger">Delete IP</button>
+                <button id="updatePacketBtn" class="btn btn-outline">Update Packet</button>
+                <button id="blacklistBtn" class="btn btn-dark">Blacklist</button>
+                <button id="whitelistBtn" class="btn btn-success">Whitelist</button>
+            </div>
+        </div>
+
+        <div class="controls">
             <div class="mode-controls">
                 <select id="treeSelect" class="select-input">
                     <option value="splay">Splay Tree</option>
@@ -39,15 +49,24 @@
 
         <div id="visualizer-container" class="multi-tree">
             <div class="tree-view" id="splay-view">
-                <div class="tree-header">Splay Tree <span class="metrics" id="splay-metrics"></span></div>
+                <div class="tree-header">Splay Tree</div>
+                <div class="metrics-grid" id="splay-metrics">
+                    <!-- Metrics cards will be injected here -->
+                </div>
                 <svg id="splay-svg" class="tree-svg"></svg>
             </div>
             <div class="tree-view" id="bst-view" style="display: none;">
-                <div class="tree-header">Binary Search Tree <span class="metrics" id="bst-metrics"></span></div>
+                <div class="tree-header">Binary Search Tree</div>
+                <div class="metrics-grid" id="bst-metrics">
+                    <!-- Metrics cards will be injected here -->
+                </div>
                 <svg id="bst-svg" class="tree-svg"></svg>
             </div>
             <div class="tree-view" id="avl-view" style="display: none;">
-                <div class="tree-header">AVL Tree <span class="metrics" id="avl-metrics"></span></div>
+                <div class="tree-header">AVL Tree</div>
+                <div class="metrics-grid" id="avl-metrics">
+                    <!-- Metrics cards will be injected here -->
+                </div>
                 <svg id="avl-svg" class="tree-svg"></svg>
             </div>
             <div id="empty-state">
@@ -57,12 +76,49 @@
 
         <div id="graph-container">
             <div class="graph-header">Operation Cost Analysis (Amortized View)</div>
+            
+            <div class="simulation-controls">
+                <div class="sim-label">Workload Simulations:</div>
+                <div class="sim-buttons">
+                    <button id="hotspotBtn" class="btn btn-outline btn-sm">Hotspot</button>
+                    <button id="randomBtn" class="btn btn-outline btn-sm">Random</button>
+                    <button id="seqBtn" class="btn btn-outline btn-sm">Sequential</button>
+                </div>
+            </div>
+
+            <div id="sim-results" style="display: none;">
+                <div class="result-header">Last Simulation: <span id="sim-type-text">None</span></div>
+                <div class="results-grid">
+                    <div class="result-card splay">Splay Avg: <span id="splay-avg">-</span></div>
+                    <div class="result-card bst">BST Avg: <span id="bst-avg">-</span></div>
+                    <div class="result-card avl">AVL Avg: <span id="avl-avg">-</span></div>
+                </div>
+            </div>
+
             <div class="graph-legend">
                 <span class="legend-item"><span class="color-box splay"></span> Splay</span>
                 <span class="legend-item"><span class="color-box bst"></span> BST</span>
                 <span class="legend-item"><span class="color-box avl"></span> AVL</span>
             </div>
             <canvas id="costGraph"></canvas>
+        </div>
+
+        <div id="table-container">
+            <div class="table-header">Network IP Registry</div>
+            <div class="table-wrapper">
+                <table id="ipTable">
+                    <thead>
+                        <tr>
+                            <th>IP Address</th>
+                            <th>Data Packet</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ipTableBody">
+                        <!-- IP rows will be added here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div id="status-bar">
